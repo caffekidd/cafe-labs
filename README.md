@@ -1,6 +1,6 @@
 # cafe-labs
 
-idea - vampire survivors type 
+idea - vampire survivors clone
 
 mechanics
 - singular character vs multiple enemies
@@ -16,8 +16,11 @@ game development side/what to learn implementing
 - player movement
 - 3rd person/  top down
 - enemy spawning (_3 types_ )
+  - pauses and charge attack at player
+  - goes around and shoots projectile
+  - moving towards player
  **- coroutines **
--  and pathing
+-  ai enemy pathing
 - timer mechanic 
 - player skills
 - life and mana or cd mechanics
