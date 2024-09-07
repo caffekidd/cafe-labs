@@ -19,10 +19,11 @@ game development side/what to learn implementing
   - pauses and charge attack at player
   - goes around and shoots projectile
   - moving towards player
+    
  **- coroutines **
 -  ai enemy pathing
 - timer mechanic 
-- player skills
+- player skills (slash and )
 - life and mana or cd mechanics
 
 **7 weeks**
