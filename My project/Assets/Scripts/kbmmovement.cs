@@ -12,7 +12,7 @@ using UnityEngine.InputSystem.iOS;
 public class kbmmovement : MonoBehaviour
 {
     [SerializeField] private float playerSpeed = 5f;
-    [SerializeField] private float gravityValue = -9.8f;
+
 
     private CharacterController controller;
     
