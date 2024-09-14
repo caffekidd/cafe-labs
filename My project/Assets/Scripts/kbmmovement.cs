@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Principal;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.iOS;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PlayerInput))]
@@ -11,7 +13,6 @@ public class kbmmovement : MonoBehaviour
 {
     [SerializeField] private float playerSpeed = 5f;
     [SerializeField] private float gravityValue = -9.8f;
-    [SerializeField] private float rotationSmoothing = 1000f;
 
     private CharacterController controller;
     
@@ -57,15 +58,26 @@ public class kbmmovement : MonoBehaviour
     {
         Vector3 move = new Vector3(movement.x, 0, movement.y);
         controller.Move(move * Time.deltaTime * playerSpeed);
-
-
-        // in case there's vertical movement
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
     }
 
     void HandleRotation()
     {
+        Ray ray = Camera.main.ScreenPointToRay(aim);
+        Plane groundPlane = new Plane (Vector3.up, Vector3.zero);
+        float rayDistance;
 
+        if (groundPlane.Raycast(ray, out rayDistance))
+        {
+            Vector3 point = ray.GetPoint(rayDistance);
+            LookAt(point);
+        }
     }
+
+    //not understood but something about fixing where the character looks at 
+    private void LookAt(Vector3 lookPoint)
+    {
+        Vector3 heightCorrectedPoint = new Vector3 (lookPoint.x, transform.position.y, lookPoint.z);
+        transform.LookAt(heightCorrectedPoint);
+    }
+    
 }
