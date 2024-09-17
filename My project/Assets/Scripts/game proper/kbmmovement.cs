@@ -12,6 +12,8 @@ using UnityEngine.InputSystem.iOS;
 public class kbmmovement : MonoBehaviour
 {
     [SerializeField] private float playerSpeed = 5f;
+    [SerializeField] private float gravity = -9.8f;
+    
 
 
     private CharacterController controller;
@@ -58,6 +60,9 @@ public class kbmmovement : MonoBehaviour
     {
         Vector3 move = new Vector3(movement.x, 0, movement.y);
         controller.Move(move * Time.deltaTime * playerSpeed);
+
+        playerVelocity.y += gravity * Time.deltaTime;
+        controller.Move (playerVelocity * Time.deltaTime);
     }
 
     void HandleRotation()

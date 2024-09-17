@@ -6,17 +6,16 @@ public class ChaseAI : MonoBehaviour
 {
     public NavMeshAgent agent;
     public Transform player;
-    public LayerMask theGround, thePlayer;
+    public LayerMask thePlayer;
+    private PlayerStats playerHealth;
 
-    public float health;
+    public int health = 5;
+    public int damage = 1;
 
-    public float sightRange, attackRange;
-    public bool playerInSightRange, playerInAttackRange;
+    public float sightRange;
+    public bool playerInSightRange;
 
-    public float timeBetweenAttacks;
-
-    bool alreadyAttacked;
-      private void Awake()
+    private void Awake()
     {
         player = GameObject.Find("Capsule").transform;
         agent = GetComponent<NavMeshAgent>();
@@ -26,36 +25,28 @@ public class ChaseAI : MonoBehaviour
     {
         //Check for sight and attack range
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, thePlayer);
-        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, thePlayer);
 
-        if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-        if (playerInAttackRange && playerInSightRange) AttackPlayer();
+        if (playerInSightRange) ChasePlayer();
     }
+
 
     private void ChasePlayer()
     {
         agent.SetDestination(player.position);
     }
 
-    private void AttackPlayer()
+    void OnCollisionEnter(Collision contactDamage) 
     {
-        agent.SetDestination(transform.position);
-        transform.LookAt(player);
-
-        if (!alreadyAttacked)
+        if (contactDamage.gameObject.tag == "Player")
         {
-        
+            if (playerHealth == null)
+            {
+            playerHealth = contactDamage.gameObject.GetComponent<PlayerStats>();
+            }
 
-        alreadyAttacked = true;
-        Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            playerHealth.HurtPlayer(damage);
+            
         }
-
-       
-    }
-
-    private void ResetAttack()
-    {
-        alreadyAttacked = false;
     }
 
     public void TakeDamage(int damage)

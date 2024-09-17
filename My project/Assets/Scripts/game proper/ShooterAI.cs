@@ -8,7 +8,7 @@ public class ShooterAI : MonoBehaviour
     public Transform player;
     public LayerMask theGround, thePlayer;
 
-    public float health;
+    public float health = 3;
 
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
@@ -47,8 +47,8 @@ public class ShooterAI : MonoBehaviour
         if (!alreadyAttacked)
         {
         Rigidbody bulleto = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-        bulleto.AddForce(transform.forward * 32f, ForceMode.Impulse);
-        bulleto.AddForce(transform.up * 8f, ForceMode.Impulse);
+        bulleto.AddForce(transform.forward * 10f, ForceMode.Impulse);
+        
 
         alreadyAttacked = true;
         Invoke(nameof(ResetAttack), timeBetweenAttacks);
