@@ -8,9 +8,12 @@ public class ChaseAI : MonoBehaviour
     public Transform player;
     public LayerMask thePlayer;
     private PlayerStats playerHealth;
+    private PlayerStats TotalScore;
 
     public int health = 5;
     public int damage = 1;
+
+    public int enemyPointValue = 1;
 
     public float sightRange;
     public bool playerInSightRange;
@@ -19,6 +22,7 @@ public class ChaseAI : MonoBehaviour
     {
         player = GameObject.Find("Capsule").transform;
         agent = GetComponent<NavMeshAgent>();
+        TotalScore = gameObject.GetComponent<PlayerStats>();
     }
 
     private void Update()
@@ -42,8 +46,9 @@ public class ChaseAI : MonoBehaviour
             if (playerHealth == null)
             {
             playerHealth = contactDamage.gameObject.GetComponent<PlayerStats>();
+            
             }
-
+            
             playerHealth.HurtPlayer(damage);
             
         }
@@ -53,11 +58,11 @@ public class ChaseAI : MonoBehaviour
     {
         health -= damage;
 
-        if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
-    }
-    private void DestroyEnemy()
-    {
+        if (health <= 0)
+        {
         Destroy(gameObject);
+        TotalScore.addPoint(enemyPointValue);
+        }
     }
 
    

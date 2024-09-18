@@ -2,31 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public class ShooterAI : MonoBehaviour
+
+public class chargetest : MonoBehaviour
 {
+
     public NavMeshAgent agent;
     public Transform player;
-    public LayerMask theGround, thePlayer;
-    private PlayerStats TotalScore;
-
-    public float health = 3;
-    public int enemyPointValue = 2;
-
+    public LayerMask thePlayer;
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
-
-    public float timeBetweenAttacks = 2;
     bool alreadyAttacked;
-    public GameObject projectile;
+    public Rigidbody rbagent;
 
+    public int timeBetweenAttacks = 1;
 
-      private void Awake()
+    private void Awake() 
     {
-        player = GameObject.Find("Capsule").transform;
-        agent = GetComponent<NavMeshAgent>();
+        rbagent = GetComponent<Rigidbody>();
     }
 
-    private void Update()
+
+     private void Update()
     {
         //Check for sight and attack range
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, thePlayer);
@@ -34,7 +30,9 @@ public class ShooterAI : MonoBehaviour
 
         if (playerInSightRange && !playerInAttackRange) ChasePlayer();
         if (playerInAttackRange && playerInSightRange) AttackPlayer();
+
     }
+
 
     private void ChasePlayer()
     {
@@ -43,37 +41,24 @@ public class ShooterAI : MonoBehaviour
 
     private void AttackPlayer()
     {
-        agent.SetDestination(transform.position);
         transform.LookAt(player);
+        Debug.Log(rbagent.velocity.magnitude);
 
         if (!alreadyAttacked)
         {
-        Rigidbody bulleto = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-        bulleto.AddForce(transform.forward * 10f, ForceMode.Impulse);
-        
+        rbagent.AddForce(player.position - transform.position, ForceMode.Impulse);
+
+        Debug.Log("charge");
 
         alreadyAttacked = true;
+        
         Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
-
-       
     }
 
     private void ResetAttack()
     {
         alreadyAttacked = false;
+        rbagent.velocity = Vector3.zero;
     }
-
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
-
-        if (health <= 0)
-        {
-        Destroy(gameObject);
-        TotalScore.addPoint(enemyPointValue);
-        }
-    }
-
-   
 }
