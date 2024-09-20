@@ -1,13 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+
+
 using UnityEngine;
 using UnityEngine.AI;
 public class ShooterAI : MonoBehaviour
 {
     public NavMeshAgent agent;
     public Transform player;
-    public LayerMask theGround, thePlayer;
-    private PlayerStats TotalScore;
+    public LayerMask thePlayer;
+
 
     public float health = 3;
     public int enemyPointValue = 2;
@@ -18,12 +18,17 @@ public class ShooterAI : MonoBehaviour
     public float timeBetweenAttacks = 2;
     bool alreadyAttacked;
     public GameObject projectile;
+    private PlayerStats playerStats;
 
 
       private void Awake()
     {
         player = GameObject.Find("Capsule").transform;
+        playerStats = player.GetComponent<PlayerStats>();
+
         agent = GetComponent<NavMeshAgent>();
+
+        projectile = Resources.Load("prefabs/projectile") as GameObject;
     }
 
     private void Update()
@@ -58,7 +63,6 @@ public class ShooterAI : MonoBehaviour
 
        
     }
-
     private void ResetAttack()
     {
         alreadyAttacked = false;
@@ -71,7 +75,7 @@ public class ShooterAI : MonoBehaviour
         if (health <= 0)
         {
         Destroy(gameObject);
-        TotalScore.addPoint(enemyPointValue);
+        playerStats.addPoint(enemyPointValue);
         }
     }
 

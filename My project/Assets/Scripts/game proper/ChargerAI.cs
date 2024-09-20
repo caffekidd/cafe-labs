@@ -1,6 +1,4 @@
-using System.Buffers.Text;
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -27,11 +25,13 @@ public class ChargerAI : MonoBehaviour
  
     bool alreadyAttacked;
 
-
+    private PlayerStats playerStats;
 
       private void Awake()
     {
         player = GameObject.Find("Capsule").transform;
+        playerStats = player.GetComponent<PlayerStats>();
+
         agent = GetComponent<NavMeshAgent>();
         rbagent = GetComponent<Rigidbody>();
     }
@@ -45,7 +45,7 @@ public class ChargerAI : MonoBehaviour
         if (playerInSightRange && !playerInAttackRange) ChasePlayer();
         if (playerInAttackRange && playerInSightRange) AttackPlayer();
 
-        chargePoint = transform.position - player.position;
+        
     }
 
     private void ChasePlayer()
@@ -55,11 +55,11 @@ public class ChargerAI : MonoBehaviour
 
     private void AttackPlayer()
     {
-        transform.LookAt(player);
+        chargePoint = transform.position - player.position;
 
         if (!alreadyAttacked)
         {
-        rbagent.AddForce(-chargePoint * 2, ForceMode.Impulse);
+        rbagent.AddForce(-chargePoint * 1.5f, ForceMode.Impulse);
         Invoke(nameof(ResetSpeed), ResetTimer);
         
 
@@ -97,7 +97,7 @@ public class ChargerAI : MonoBehaviour
         if (health <= 0)
         {
         Destroy(gameObject);
-        TotalScore.addPoint(enemyPointValue);
+        playerStats.addPoint(enemyPointValue);
         }
     }
 }

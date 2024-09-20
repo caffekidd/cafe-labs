@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.AI;
 public class ChaseAI : MonoBehaviour
@@ -8,7 +7,7 @@ public class ChaseAI : MonoBehaviour
     public Transform player;
     public LayerMask thePlayer;
     private PlayerStats playerHealth;
-    private PlayerStats TotalScore;
+    private PlayerStats playerStats;
 
     public int health = 5;
     public int damage = 1;
@@ -21,8 +20,10 @@ public class ChaseAI : MonoBehaviour
     private void Awake()
     {
         player = GameObject.Find("Capsule").transform;
+        playerStats = player.GetComponent<PlayerStats>();
+
         agent = GetComponent<NavMeshAgent>();
-        TotalScore = gameObject.GetComponent<PlayerStats>();
+       
     }
 
     private void Update()
@@ -45,8 +46,7 @@ public class ChaseAI : MonoBehaviour
         {
             if (playerHealth == null)
             {
-            playerHealth = contactDamage.gameObject.GetComponent<PlayerStats>();
-            
+            playerHealth = contactDamage.gameObject.GetComponent<PlayerStats>();            
             }
             
             playerHealth.HurtPlayer(damage);
@@ -61,7 +61,7 @@ public class ChaseAI : MonoBehaviour
         if (health <= 0)
         {
         Destroy(gameObject);
-        TotalScore.addPoint(enemyPointValue);
+        playerStats.addPoint(enemyPointValue);
         }
     }
 
