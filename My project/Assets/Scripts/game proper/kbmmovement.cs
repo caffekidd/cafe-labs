@@ -20,12 +20,14 @@ public class kbmmovement : MonoBehaviour
 
     private Playerkeybinds playerkeybinds;
     private PlayerInput playerInput;
+    private Animator animator;
 
     private void Awake() 
     {
         controller = GetComponent<CharacterController>();
         playerkeybinds = new Playerkeybinds();
         playerInput = GetComponent<PlayerInput>();
+        animator = GetComponent<Animator>();
     }
 
     private void OnEnable() 
@@ -41,9 +43,13 @@ public class kbmmovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleInput();
-        HandleMovement();
-        HandleRotation();
+        if(!PauseMenu.isPaused)
+        {
+            HandleInput();
+            HandleMovement();
+            HandleRotation();
+            animator.SetFloat("Speed", 0);
+        }
     }
 
     void HandleInput()
@@ -59,8 +65,11 @@ public class kbmmovement : MonoBehaviour
 
         playerVelocity.y += gravity * Time.deltaTime;
         controller.Move (playerVelocity * Time.deltaTime);
+        animator.SetFloat("Speed", 1);
+        
     }
 
+    
     void HandleRotation()
     {
         Ray ray = Camera.main.ScreenPointToRay(aim);

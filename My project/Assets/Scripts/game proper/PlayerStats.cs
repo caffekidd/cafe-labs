@@ -10,6 +10,8 @@ public class PlayerStats : MonoBehaviour
     public int playerHealth;
     public int maxPlayerHealth = 20;
     public int TotalScore;
+    public int hiscoreValue;
+    public GameOver gameOver;
 
     private string elaspedTime;
 
@@ -17,6 +19,7 @@ public class PlayerStats : MonoBehaviour
     {
         playerHealth = maxPlayerHealth;
         TotalScore = 0;
+        hiscoreValue = PlayerPrefs.GetInt("hiscoreValue", 0);
     }
 
     public void Update()
@@ -41,10 +44,17 @@ public class PlayerStats : MonoBehaviour
     public void addPoint(int enemyPointValue)
     {
         TotalScore += enemyPointValue;
+
+        if (hiscoreValue < TotalScore)
+        {
+            PlayerPrefs.SetInt("hiscoreValue", TotalScore);
+        }
     }
     private void DestroyPlayer()
     {
         Destroy(gameObject);
+        gameOver.gameOverScreen.SetActive(true);
+        Time.timeScale = 0f;
     }
 
    

@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations;
 public class ChaseAI : MonoBehaviour
 {
     public NavMeshAgent agent;
@@ -38,6 +39,7 @@ public class ChaseAI : MonoBehaviour
     private void ChasePlayer()
     {
         agent.SetDestination(player.position);
+        transform.LookAt(player.position);
     }
 
     void OnCollisionEnter(Collision contactDamage) 
