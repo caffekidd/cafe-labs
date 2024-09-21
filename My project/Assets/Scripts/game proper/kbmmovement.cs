@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput))]
 public class kbmmovement : MonoBehaviour
 {
-    [SerializeField] private float playerSpeed = 5f;
+    [SerializeField] private float playerSpeed = 20f;
     [SerializeField] private float gravity = -9.8f;
     
 
